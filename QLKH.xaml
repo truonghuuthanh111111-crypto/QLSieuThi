@@ -1,0 +1,123 @@
+<Window x:Class="QLKH.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quản lý khách hàng (QLKH)" Height="740" Width="1180"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,6,0,6"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Padding" Value="14,8"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#EAF3FF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#DAECFF" Padding="16" BorderBrush="#B6D6FF" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <TextBlock Text="Hệ thống Quản Lý Khách Hàng" FontSize="30" FontWeight="Bold" Foreground="#1759C5"/>
+                <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="#1759C5"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Tìm kiếm -->
+        <Border Grid.Row="1" Margin="16" Padding="12" Background="White" CornerRadius="10"
+                BorderBrush="#D6E6FF" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Họ tên:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="txtSearchName" Grid.Column="1"
+                         ToolTip="Nhập họ tên" TextChanged="SearchBoxes_TextChanged"/>
+                <TextBlock Grid.Column="2" Text="CCCD:" VerticalAlignment="Center" Margin="12,0,8,0"/>
+                <TextBox x:Name="txtSearchCCCD" Grid.Column="3"
+                         ToolTip="Nhập CCCD" TextChanged="SearchBoxes_TextChanged"/>
+                <Button Grid.Column="4" Content="Tìm" Click="BtnSearch_Click" Margin="12,0,0,0"/>
+                <Button Grid.Column="5" Content="Tải lại" Click="BtnReload_Click" Margin="8,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Nội dung -->
+        <Grid Grid.Row="2" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Danh sách (trái) -->
+            <Border Background="White" CornerRadius="10" Padding="10"
+                    BorderBrush="#D6E6FF" BorderThickness="1" Margin="0,0,8,0">
+                <DataGrid x:Name="dgCustomers" SelectionChanged="DgCustomers_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Mã KH" Binding="{Binding MaND}" Width="90"/>
+                        <DataGridTextColumn Header="Họ tên" Binding="{Binding HoTen}" Width="*"/>
+                        <DataGridTextColumn Header="CCCD" Binding="{Binding CCCD}" Width="160"/>
+                        <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDT}" Width="160"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- Form chi tiết (phải) -->
+            <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="16"
+                    BorderBrush="#D6E6FF" BorderThickness="1" Margin="8,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mã KH:" VerticalAlignment="Center"/>
+                    <TextBox  Grid.Row="0" Grid.Column="1" x:Name="txtMaND" IsReadOnly="True"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Họ tên:" VerticalAlignment="Center"/>
+                    <TextBox  Grid.Row="1" Grid.Column="1" x:Name="txtHoTen"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="CCCD:" VerticalAlignment="Center"/>
+                    <TextBox  Grid.Row="2" Grid.Column="1" x:Name="txtCCCD"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Số ĐT:" VerticalAlignment="Center"/>
+                    <TextBox  Grid.Row="3" Grid.Column="1" x:Name="txtSoDT"/>
+                    <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                        <Button Content="Thêm"         Click="BtnAdd_Click"/>
+                        <Button Content="Cập nhật"     Click="BtnUpdate_Click"/>
+                        <Button Content="Xoá"          Click="BtnDelete_Click"/>
+                        <Button Content="Làm mới form" Click="BtnClear_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StatusBar Grid.Row="3" Margin="8,0,8,8" Background="#EAF3FF">
+            <StatusBarItem>
+                <TextBlock x:Name="txtStatus" Text="Sẵn sàng."/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
